@@ -1,12 +1,11 @@
 name: expansion_widget
 description: An edited version of Expansion Tile that allows you customize tile widget and animation.
-version: 0.0.1
-author: dat.descartes
-homepage: http://
+version: 0.0.1-nullsafety.0
+homepage: https://github.com/datdescartes/expansion_widget
 
 environment:
   sdk: ">=2.12.0-0 <3.0.0"
-  flutter: ">=1.17.0 <2.0.0"
+  flutter: ">=1.17.0"
 
 dependencies:
   flutter:
