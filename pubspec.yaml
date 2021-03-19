@@ -1,6 +1,6 @@
 name: expansion_widget
 description: An edited version of Expansion Tile that allows you customize tile widget and animation.
-version: 0.0.1-nullsafety.0
+version: 0.0.1
 homepage: https://github.com/datdescartes/expansion_widget
 
 environment:
