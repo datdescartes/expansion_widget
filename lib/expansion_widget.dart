@@ -3,8 +3,6 @@ library expansion_widget;
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-const Duration _kExpand = Duration(milliseconds: 200);
-
 /// A widget with a customizable title that can expands or collapses
 /// the widget to reveal or hide the [content].
 class ExpansionWidget extends StatefulWidget {
@@ -17,19 +15,29 @@ class ExpansionWidget extends StatefulWidget {
     required this.content,
     this.initiallyExpanded = false,
     this.maintainState = false,
-    this.expandedAlignment,
+    this.expandedAlignment = Alignment.center,
     this.onSaveState,
     this.onRestoreState,
+    this.duration = const Duration(milliseconds: 200),
   }) : super(key: key);
 
   /// The builder of title.
   ///
-  /// Typically a [Button] widget that call [toogleFunction] when pressed.
+  /// Typically a [Button] widget that call [toggleFunction] when pressed.
   final Widget Function(double animationValue, double easeInValue,
-      bool isExpaned, Function({bool animated}) toogleFunction) titleBuilder;
+      bool isExpanded, Function({bool animated}) toggleFunction) titleBuilder;
 
+  /// Function to save expansion state
+  /// Called when expansion state changed
   final void Function(bool isExpanded)? onSaveState;
+
+  /// function to restore expansion state.
+  /// Return null if there is no state to store;
+  /// in this case, [initiallyExpanded] will be used
   final bool? Function()? onRestoreState;
+
+  /// The length of time of animation
+  final Duration duration;
 
   /// Called when the widget expands or collapses.
   ///
@@ -60,9 +68,7 @@ class ExpansionWidget extends StatefulWidget {
   ///
   /// Modifying this property controls the alignment of the column within the
   /// expanded expansionWidget.
-  ///
-  /// When the value is null, the value of `expandedAlignment` is [Alignment.center].
-  final Alignment? expandedAlignment;
+  final Alignment expandedAlignment;
 
   @override
   _ExpansionWidgetState createState() => _ExpansionWidgetState();
@@ -81,7 +87,7 @@ class _ExpansionWidgetState extends State<ExpansionWidget>
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(duration: _kExpand, vsync: this);
+    _controller = AnimationController(duration: widget.duration, vsync: this);
     _heightFactor = _controller.drive(_easeInTween);
 
     _isExpanded = widget.onRestoreState?.call() ?? widget.initiallyExpanded;
@@ -142,7 +148,7 @@ class _ExpansionWidgetState extends State<ExpansionWidget>
             _controller.value, _heightFactor.value, _isExpanded, toggle),
         ClipRect(
           child: Align(
-            alignment: widget.expandedAlignment ?? Alignment.center,
+            alignment: widget.expandedAlignment,
             heightFactor: _heightFactor.value,
             child: child,
           ),
@@ -154,6 +160,9 @@ class _ExpansionWidgetState extends State<ExpansionWidget>
   @override
   void didUpdateWidget(ExpansionWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
+    if (oldWidget.duration != widget.duration) {
+      _controller.duration = widget.duration;
+    }
     final expand = widget.onRestoreState?.call();
     if (expand != null && expand != _isExpanded) {
       toggle();
