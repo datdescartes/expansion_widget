@@ -28,6 +28,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool? _expanded2;
+  final _key3 = GlobalKey<ExpansionWidgetState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +49,8 @@ class _HomePageState extends State<HomePage> {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Expanded(child: Text('Expansion Widget Title 1')),
+                            Expanded(
+                                child: Text('1. Expansion Widget Title 1')),
                             Transform.rotate(
                               angle: math.pi * animationValue / 2,
                               child: Icon(Icons.arrow_right, size: 40),
@@ -82,7 +85,7 @@ class _HomePageState extends State<HomePage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Expanded(
-                                  child: Text('Title 2',
+                                  child: Text('2. Title 2',
                                       style: TextStyle(
                                           color: Color.lerp(Colors.black,
                                               Colors.white, easeInValue)))),
@@ -115,13 +118,51 @@ class _HomePageState extends State<HomePage> {
                   child: Text('Expaned Content'),
                 )),
           ),
+          Card(
+            color: Colors.white,
+            child: ExpansionWidget(
+                key: _key3,
+                initiallyExpanded: true,
+                titleBuilder:
+                    (double animationValue, _, bool isExpaned, toogleFunction) {
+                  return InkWell(
+                      onTap: () => toogleFunction(animated: true),
+                      child: Padding(
+                        padding: EdgeInsets.all(8),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                                child: Text('3. Expansion Widget Title 3')),
+                            Transform.rotate(
+                              angle: math.pi * animationValue / 2,
+                              child: Icon(Icons.arrow_right, size: 40),
+                              alignment: Alignment.center,
+                            )
+                          ],
+                        ),
+                      ));
+                },
+                content: Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(20),
+                  child: Text('Expaned Content'),
+                )),
+          ),
           ElevatedButton(
               onPressed: () {
                 setState(() {
                   _expanded2 = !(_expanded2 ?? false);
                 });
               },
-              child: Text('Toogle')),
+              child: Text('Toogle 2')),
+          ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  _key3.currentState?.toggle(animated: true);
+                });
+              },
+              child: Text('Toogle 3')),
         ],
       ),
     );
