@@ -17,6 +17,7 @@ An edited version of Expansion Tile that allows you customize tile widget and an
 | onSaveState | Function (bool isExpanded)? | Function to save expansion state Called when expansion state changed |
 | onRestoreState | bool? Function()? | default: null function to restore expansion state. Return null if there is no state to store, in this case, [initiallyExpanded] will be used |
 | duration | Duration | default: 200 ms The length of time of animation |
+| onExpansionWillChange | bool Function(bool)? | default: null Called when the widget will change expanded state. When the widget is going to start expanding/collapsing, this function is called with the value true/false. Return false to prevent expanded state to change. Return true(default) to allow expanded state changing. |
 | onExpansionChanged | Function(bool)? | default: null Called when the widget expands or collapses. When the widget starts expanding, this function is called with the value true. When the tile starts collapsing, this function is called with the value false. |
 
 ## Usage

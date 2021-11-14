@@ -1,9 +1,7 @@
 name: expansion_widget
 description: An edited version of Expansion Tile that allows you customize tile widget and animation.
-version: 0.0.2
+version: 0.0.3
 homepage: https://github.com/datdescartes/expansion_widget
-authors:
-  - dat.descartes
 
 environment:
   sdk: ">=2.12.0 <3.0.0"

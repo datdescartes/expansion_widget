@@ -1,3 +1,8 @@
+## [0.0.3]
+
+* Added onExpansionWillChange to control if the expanded state should be changed or not. 
+
+
 ## [0.0.2]
 
 * Exposed the state(ExpansionWidgetState). 
