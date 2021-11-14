@@ -11,6 +11,7 @@ class ExpansionWidget extends StatefulWidget {
   const ExpansionWidget({
     Key? key,
     required this.titleBuilder,
+    this.onExpansionWillChange,
     this.onExpansionChanged,
     required this.content,
     this.initiallyExpanded = false,
@@ -45,6 +46,15 @@ class ExpansionWidget extends StatefulWidget {
   /// true. When the tile starts collapsing, this function is called with
   /// the value false.
   final void Function(bool)? onExpansionChanged;
+
+  /// Called when the widget will change expanded state.
+  ///
+  /// When the widget is going to start expanding/collapsing, this function is
+  /// called with the value true/false.
+  ///
+  /// Return false to prevent expanded state to change.
+  /// Return true(default) to allow expanded state changing.
+  final bool Function(bool)? onExpansionWillChange;
 
   /// The widget that are displayed when the expansionWidget expands.
   final Widget content;
@@ -114,6 +124,9 @@ class ExpansionWidgetState extends State<ExpansionWidget>
 
   void _setExpanded(bool isExpanded, bool animated) {
     if (_isExpanded == isExpanded) {
+      return;
+    }
+    if (!(widget.onExpansionWillChange?.call(isExpanded) ?? true)) {
       return;
     }
     setState(() {
