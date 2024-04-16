@@ -1,3 +1,7 @@
+## [0.1.0]
+
+* Added constructor ExpansionWidget.autoSaveState
+
 ## [0.0.3]
 
 * Added onExpansionWillChange to control if the expanded state should be changed or not. 

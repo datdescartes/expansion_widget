@@ -22,7 +22,7 @@ An edited version of Expansion Tile that allows you customize tile widget and an
 
 ## Usage
 
-```
+```dart
 import 'package:expansion_widget/expansion_widget.dart';
 import 'dart:math' as math;
 
@@ -54,3 +54,4 @@ ExpansionWidget(
     ))
 ```
 
+Or using `ExpansionWidget.autoSaveState()` to auto save/restore expansion state.

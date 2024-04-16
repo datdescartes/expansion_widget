@@ -1,9 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:expansion_widget/expansion_widget.dart';
-
 void main() {
   test('adds one to input values', () {
-    expect(1+1, 2);
+    expect(1 + 1, 2);
   });
 }

@@ -4,10 +4,12 @@ import 'package:expansion_widget/expansion_widget.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -16,14 +18,16 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomePage(),
+      home: const HomePage(),
     );
   }
 }
 
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
-  _HomePageState createState() => _HomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
@@ -33,28 +37,28 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Flutter Expansion Widget Demo')),
+      appBar: AppBar(title: const Text('Flutter Expansion Widget Demo')),
       body: Column(
         children: [
           Card(
             color: Colors.white,
-            child: ExpansionWidget(
+            child: ExpansionWidget.autoSaveState(
                 initiallyExpanded: true,
                 titleBuilder:
                     (double animationValue, _, bool isExpaned, toogleFunction) {
                   return InkWell(
                       onTap: () => toogleFunction(animated: true),
                       child: Padding(
-                        padding: EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(8),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Expanded(
+                            const Expanded(
                                 child: Text('1. Expansion Widget Title 1')),
                             Transform.rotate(
                               angle: math.pi * animationValue / 2,
-                              child: Icon(Icons.arrow_right, size: 40),
                               alignment: Alignment.center,
+                              child: const Icon(Icons.arrow_right, size: 40),
                             )
                           ],
                         ),
@@ -62,15 +66,15 @@ class _HomePageState extends State<HomePage> {
                 },
                 content: Container(
                   width: double.infinity,
-                  padding: EdgeInsets.all(20),
-                  child: Text('Expaned Content'),
+                  padding: const EdgeInsets.all(20),
+                  child: const Text('Expaned Content'),
                 )),
           ),
           Card(
             clipBehavior: Clip.hardEdge,
             child: ExpansionWidget(
-                onSaveState: (value) => _expanded2 = value,
-                onRestoreState: () => _expanded2,
+                onSaveState: (context, value) => _expanded2 = value,
+                onRestoreState: (context) => _expanded2,
                 duration: const Duration(seconds: 1),
                 titleBuilder:
                     (_, double easeInValue, bool isExpaned, toogleFunction) {
@@ -80,7 +84,7 @@ class _HomePageState extends State<HomePage> {
                     child: InkWell(
                         onTap: () => toogleFunction(animated: true),
                         child: Padding(
-                          padding: EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(8),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
@@ -91,7 +95,7 @@ class _HomePageState extends State<HomePage> {
                                               Colors.white, easeInValue)))),
                               Transform.rotate(
                                   angle: -math.pi * 2 * (easeInValue),
-                                  child: Icon(Icons.settings,
+                                  child: const Icon(Icons.settings,
                                       size: 40, color: Colors.white)),
                               Container(
                                 color: Colors.transparent,
@@ -100,11 +104,11 @@ class _HomePageState extends State<HomePage> {
                               ),
                               Transform.rotate(
                                 angle: math.pi * (easeInValue + 0.5),
+                                alignment: Alignment.center,
                                 child: Icon(Icons.arrow_back,
                                     size: 40,
                                     color: Color.lerp(Colors.white,
                                         Colors.black, easeInValue)),
-                                alignment: Alignment.center,
                               )
                             ],
                           ),
@@ -114,8 +118,8 @@ class _HomePageState extends State<HomePage> {
                 content: Container(
                   width: double.infinity,
                   color: Colors.orange,
-                  padding: EdgeInsets.all(20),
-                  child: Text('Expaned Content'),
+                  padding: const EdgeInsets.all(20),
+                  child: const Text('Expaned Content'),
                 )),
           ),
           Card(
@@ -128,16 +132,16 @@ class _HomePageState extends State<HomePage> {
                   return InkWell(
                       onTap: () => toogleFunction(animated: true),
                       child: Padding(
-                        padding: EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(8),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Expanded(
+                            const Expanded(
                                 child: Text('3. Expansion Widget Title 3')),
                             Transform.rotate(
                               angle: math.pi * animationValue / 2,
-                              child: Icon(Icons.arrow_right, size: 40),
                               alignment: Alignment.center,
+                              child: const Icon(Icons.arrow_right, size: 40),
                             )
                           ],
                         ),
@@ -145,8 +149,8 @@ class _HomePageState extends State<HomePage> {
                 },
                 content: Container(
                   width: double.infinity,
-                  padding: EdgeInsets.all(20),
-                  child: Text('Expaned Content'),
+                  padding: const EdgeInsets.all(20),
+                  child: const Text('Expaned Content'),
                 )),
           ),
           ElevatedButton(
@@ -155,14 +159,14 @@ class _HomePageState extends State<HomePage> {
                   _expanded2 = !(_expanded2 ?? false);
                 });
               },
-              child: Text('Toogle 2')),
+              child: const Text('Toogle 2')),
           ElevatedButton(
               onPressed: () {
                 setState(() {
                   _key3.currentState?.toggle(animated: true);
                 });
               },
-              child: Text('Toogle 3')),
+              child: const Text('Toogle 3')),
         ],
       ),
     );

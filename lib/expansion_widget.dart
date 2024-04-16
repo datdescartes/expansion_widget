@@ -3,6 +3,14 @@ library expansion_widget;
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+bool? _restoreStateFromPageStore(BuildContext context) {
+  return PageStorage.maybeOf(context)?.readState(context) as bool?;
+}
+
+void _saveStateToPageStore(BuildContext context, bool isExpanded) {
+  PageStorage.maybeOf(context)?.writeState(context, isExpanded);
+}
+
 /// A widget with a customizable title that can expands or collapses
 /// the widget to reveal or hide the [content].
 class ExpansionWidget extends StatefulWidget {
@@ -22,6 +30,20 @@ class ExpansionWidget extends StatefulWidget {
     this.duration = const Duration(milliseconds: 200),
   }) : super(key: key);
 
+  const ExpansionWidget.autoSaveState({
+    Key? key,
+    required this.titleBuilder,
+    this.onExpansionWillChange,
+    this.onExpansionChanged,
+    required this.content,
+    this.initiallyExpanded = false,
+    this.expandedAlignment = Alignment.center,
+    this.duration = const Duration(milliseconds: 200),
+  })  : maintainState = true,
+        onRestoreState = _restoreStateFromPageStore,
+        onSaveState = _saveStateToPageStore,
+        super(key: key);
+
   /// The builder of title.
   ///
   /// Typically a [Button] widget that call [toggleFunction] when pressed.
@@ -30,12 +52,12 @@ class ExpansionWidget extends StatefulWidget {
 
   /// Function to save expansion state
   /// Called when expansion state changed
-  final void Function(bool isExpanded)? onSaveState;
+  final void Function(BuildContext context, bool isExpanded)? onSaveState;
 
   /// function to restore expansion state.
   /// Return null if there is no state to store;
   /// in this case, [initiallyExpanded] will be used
-  final bool? Function()? onRestoreState;
+  final bool? Function(BuildContext)? onRestoreState;
 
   /// The length of time of animation
   final Duration duration;
@@ -100,7 +122,7 @@ class ExpansionWidgetState extends State<ExpansionWidget>
     _controller = AnimationController(duration: widget.duration, vsync: this);
     _heightFactor = _controller.drive(_easeInTween);
 
-    _isExpanded = widget.onRestoreState?.call() ?? widget.initiallyExpanded;
+    _isExpanded = widget.onRestoreState?.call(context) ?? widget.initiallyExpanded;
     if (_isExpanded) _controller.value = 1.0;
   }
 
@@ -148,7 +170,7 @@ class ExpansionWidgetState extends State<ExpansionWidget>
           _controller.value = 0.0;
         }
       }
-      widget.onSaveState?.call(_isExpanded);
+      widget.onSaveState?.call(context, _isExpanded);
     });
     widget.onExpansionChanged?.call(_isExpanded);
   }
@@ -176,7 +198,7 @@ class ExpansionWidgetState extends State<ExpansionWidget>
     if (oldWidget.duration != widget.duration) {
       _controller.duration = widget.duration;
     }
-    final expand = widget.onRestoreState?.call();
+    final expand = widget.onRestoreState?.call(context);
     if (expand != null && expand != _isExpanded) {
       toggle();
     }
@@ -185,7 +207,7 @@ class ExpansionWidgetState extends State<ExpansionWidget>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final expand = widget.onRestoreState?.call();
+    final expand = widget.onRestoreState?.call(context);
     if (expand != null && expand != _isExpanded) {
       toggle();
     }
